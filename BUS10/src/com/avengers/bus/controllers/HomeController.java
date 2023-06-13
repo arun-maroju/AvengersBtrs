@@ -25,7 +25,7 @@ public class HomeController {
 		this.busTypeService = busTypeService;
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String firstPage(Model model) {
 		//
 		// ModelAndView mav = new ModelAndView();

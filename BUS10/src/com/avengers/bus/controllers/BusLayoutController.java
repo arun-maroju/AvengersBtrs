@@ -21,7 +21,10 @@ public class BusLayoutController {
 			@RequestParam("trip_id") int tripId, @RequestParam("source") String source,
 			@RequestParam("destination") String destination, @RequestParam("trip_date") String tripDate,
 			@RequestParam("arrival") String arrival, @RequestParam("depature") String depature,
-			@RequestParam("bsty_title") String bstyTitle, @RequestParam("available_seats") int availableSeats) {
+			@RequestParam("bsty_title") String bstyTitle, @RequestParam("available_seats") int availableSeats,
+			@RequestParam("seat_fare") int seatFare, @RequestParam("berth_fare") int berthFare
+
+	) {
 		//
 		// System.out.println("service_id: " + serviceId);
 		// System.out.println("trip_id: " + tripId);
@@ -45,6 +48,8 @@ public class BusLayoutController {
 		bus.setTrip_date(Date.valueOf(tripDate));
 		bus.setAvailable_seats(availableSeats);
 		bus.setBsty_title(bstyTitle);
+		bus.setSeat_fare(seatFare);
+		bus.setBerth_fare(berthFare);
 		System.out.println(bus);
 
 		SeatsBookedForOneService s1 = new SeatsBookedForOneService();

@@ -20,18 +20,10 @@ public class BusListRowMapper implements RowMapper<BusSearchListDto> {
 		bus.setArrival(rs.getTime("arrival"));
 		bus.setBsty_title(rs.getString("bsty_title"));
 		bus.setAvailable_seats(rs.getInt("seats_available"));
+		bus.setSeat_fare(rs.getInt("seat_fare"));
+		bus.setBerth_fare(rs.getInt("berth_fare"));
+
 		return bus;
 	}
 
 }
-
-//
-// private int schedule_id;
-// private int service_id;
-// private String sourc;
-// private String desti;
-// private Date trip_date;
-// private Time departure;
-// private Time arrival;
-// private String bsty_title;
-// private int available_seats;

@@ -14,24 +14,8 @@ public class BusSearchListDto {
 	private Time arrival;
 	private String bsty_title;
 	private int available_seats;
-
-	public BusSearchListDto() {
-
-	}
-
-	protected BusSearchListDto(int service_id, int trip_id, String source, String destination, Date trip_date,
-			Time depature, Time arrival, String bsty_title, int available_seats) {
-		super();
-		this.service_id = service_id;
-		this.trip_id = trip_id;
-		this.source = source;
-		this.destination = destination;
-		this.trip_date = trip_date;
-		this.depature = depature;
-		this.arrival = arrival;
-		this.bsty_title = bsty_title;
-		this.available_seats = available_seats;
-	}
+	private int seat_fare;
+	private int berth_fare;
 
 	public int getService_id() {
 		return service_id;
@@ -105,11 +89,28 @@ public class BusSearchListDto {
 		this.available_seats = available_seats;
 	}
 
+	public int getSeat_fare() {
+		return seat_fare;
+	}
+
+	public void setSeat_fare(int seat_fare) {
+		this.seat_fare = seat_fare;
+	}
+
+	public int getBerth_fare() {
+		return berth_fare;
+	}
+
+	public void setBerth_fare(int berth_fare) {
+		this.berth_fare = berth_fare;
+	}
+
 	@Override
 	public String toString() {
 		return "BusSearchListDto [service_id=" + service_id + ", trip_id=" + trip_id + ", source=" + source
 				+ ", destination=" + destination + ", trip_date=" + trip_date + ", depature=" + depature + ", arrival="
-				+ arrival + ", bsty_title=" + bsty_title + ", available_seats=" + available_seats + "]";
+				+ arrival + ", bsty_title=" + bsty_title + ", available_seats=" + available_seats + ", seat_fare="
+				+ seat_fare + ", berth_fare=" + berth_fare + "]";
 	}
 
 }
