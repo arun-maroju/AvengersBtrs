@@ -5,6 +5,9 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,15 +19,24 @@ import com.avengers.bus.dtoModels.SeatsBookedForOneService;
 
 @Controller
 public class BusLayoutController {
+	
+	
+	
+	@Autowired
+	private HttpSession httpSession;
+	
+	
 	@RequestMapping(value = "/layout", method = RequestMethod.GET)
 	public ModelAndView handleFormSubmission(@RequestParam("service_id") int serviceId,
 			@RequestParam("trip_id") int tripId, @RequestParam("source") String source,
 			@RequestParam("destination") String destination, @RequestParam("trip_date") String tripDate,
 			@RequestParam("arrival") String arrival, @RequestParam("depature") String depature,
 			@RequestParam("bsty_title") String bstyTitle, @RequestParam("available_seats") int availableSeats,
-			@RequestParam("seat_fare") int seatFare, @RequestParam("berth_fare") int berthFare
+			@RequestParam("seat_fare") double seatFare, @RequestParam("berth_fare") double berthFare
 
 	) {
+		
+		System.out.println("In bus layout method..");
 		//
 		// System.out.println("service_id: " + serviceId);
 		// System.out.println("trip_id: " + tripId);
@@ -51,6 +63,9 @@ public class BusLayoutController {
 		bus.setSeat_fare(seatFare);
 		bus.setBerth_fare(berthFare);
 		System.out.println(bus);
+		
+		httpSession.setAttribute("selectedBus", bus);
+
 
 		SeatsBookedForOneService s1 = new SeatsBookedForOneService();
 		SeatsBookedForOneService s2 = new SeatsBookedForOneService();

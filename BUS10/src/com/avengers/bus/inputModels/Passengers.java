@@ -9,6 +9,15 @@ public class Passengers {
 	private String passenger_gender;
 	private int passenger_age;
 	private int seat_id;
+	private double seat_fare;
+
+	public double getSeat_fare() {
+		return seat_fare;
+	}
+
+	public void setSeat_fare(double seat_fare) {
+		this.seat_fare = seat_fare;
+	}
 
 	public String getPassenger_id() {
 		return passenger_id;
@@ -53,7 +62,7 @@ public class Passengers {
 	@Override
 	public String toString() {
 		return "Passengers [passenger_id=" + passenger_id + ", passenger_name=" + passenger_name + ", passenger_gender="
-				+ passenger_gender + ", passenger_age=" + passenger_age + ", seat_id=" + seat_id + "]";
+				+ passenger_gender + ", passenger_age=" + passenger_age + ", seat_id=" + seat_id +"seat_fare"+seat_fare+ "]";
 	}
 
 }

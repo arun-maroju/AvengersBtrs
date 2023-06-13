@@ -121,11 +121,11 @@
 
     <h2>From Station: ${ticket.from}</h2>
     <h2>To Station: ${ticket.to}</h2>
-    <h2>Service No: ${ticket.serviceNo}</h2>
+    <h2>Service No: ${ticket.service_no}</h2>
     <h2>Ticket No: ${ticket.ticketNo}</h2>
-    <h2>Bus Type: ${ticket.busType}</h2>
-    <h2>Date of Journey: ${ticket.journeyDate}</h2>
-    <h2>Departure Time: ${ticket.departureTime}</h2>
+    <h2>Bus Type: ${ticket.bus_type}</h2>
+    <h2>Date of Journey: ${ticket.journey_date}</h2>
+    <h2>Departure Time: ${ticket.departure_time}</h2>
     <h2>Number of Passengers: ${ticket.numberOfPassengers}</h2>
 
     <h2>Passenger Details:</h2>
@@ -141,12 +141,12 @@
         </tr>
         <c:forEach var="passenger" items="${ticket.passengers}">
             <tr>
-                <td>${passenger.passengerId}</td>
-                <td>${passenger.name}</td>
-                <td>${passenger.age}</td>
-                <td>${passenger.gender}</td>
-                <td>${passenger.fare}</td>
-                <td>${passenger.seatId}</td>
+                <td>${passenger.passenger_id}</td>
+                <td>${passenger.passenger_name}</td>
+                <td>${passenger.passenger_age}</td>
+                <td>${passenger.passenger_gender}</td>
+                <td>${passenger.seat_fare}</td>
+                <td>${passenger.seat_id}</td>
             </tr>
         </c:forEach>
     </table>

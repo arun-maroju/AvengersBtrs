@@ -3,18 +3,28 @@ package com.avengers.bus.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.avengers.bus.dtoModels.BusSearchListDto;
+import com.avengers.bus.dtoModels.Ticket;
 import com.avengers.bus.inputModels.Passengers;
 
 @Controller
 public class PassengerPreviewController {
+	
+	
+	@Autowired
+	private HttpSession httpSession;
 
-	@RequestMapping(value = "passengerPreview2", method = RequestMethod.POST)
-	public String getPassengerDetails(@RequestParam("passenger_id[]") String[] passengerIds,
+	@RequestMapping(value = "passengerPreview", method = RequestMethod.POST)
+	public ModelAndView getPassengerDetails(@RequestParam("passenger_id[]") String[] passengerIds,
 			@RequestParam("seat_number[]") int[] passengerSeatNos,
 			@RequestParam("passenger_name[]") String[] passengerNames,
 			@RequestParam("passenger_age[]") int[] passengerAges,
@@ -51,8 +61,37 @@ public class PassengerPreviewController {
 		for (Passengers p : passengersList) {
 			System.out.println(p);
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		BusSearchListDto bus= (BusSearchListDto) httpSession.getAttribute("selectedBus");
+		
+		Ticket ticket=new Ticket();
+		ticket.setTo(bus.getDestination());
+		ticket.setFrom(bus.getSource());
+		ticket.setBus_type(bus.getBsty_title());
+		ticket.setJourney_date(bus.getTrip_date());
+		ticket.setDeparture_time(bus.getDepature());
+		ticket.setArrival_time(bus.getArrival());
+		ticket.setService_no(bus.getService_id());
+		ticket.setTrip_no(bus.getTrip_id());
+		ticket.setPassengers(passengersList);
+		ticket.setTotalFare(1000);
+		ticket.setTicketNo(98765432);
+		ticket.setNumberOfPassengers(passengersList.size());
+		
+		System.out.println(ticket);
+		
+		ModelAndView mav=new ModelAndView("ticketPreview");
+		mav.addObject("ticket",ticket);
+		
 
 		System.out.println("IN passenger preview controller..");
-		return "preview";
+		return mav;
 	}
 }

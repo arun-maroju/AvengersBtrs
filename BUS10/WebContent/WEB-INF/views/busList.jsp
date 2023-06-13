@@ -123,8 +123,10 @@
                         <p><span class="label ">Destination :</span> <span class="time green"><%= b.getDestination() %></span></p>
                     </div>
                     <div>
-                        <p><span class="label">Departure:</span> <span class="time green"><%= b.getDepature() %></span></p>
+                        <p><span class="label">Departure:</span> <span class="time green"><%= b.getDepature() %></span></p>          
                         <p><span class="label">Arrival:</span> <span class="time green"><%= b.getArrival() %></span></p>
+                        <span class="label ">Travel Time:</span> <span class="time red"><%= b.getDuration() %></span>
+                        
                     </div>
                     <div>
                         <p><span class="label date">Date:</span> <span class="time green"><%= b.getTrip_date() %></span></p>

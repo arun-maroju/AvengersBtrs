@@ -236,6 +236,7 @@
                 <div class="bus-details">
                 	<div>
                     <p><span class="label">Type:</span> <span class="time black"><%= b.getBsty_title() %></span></p>
+              <span class="label ">Journey Time:</span> <span class="time red"><%= b.getDuration()+" Hours" %></span>
                      
                     </div>
                      <div>
