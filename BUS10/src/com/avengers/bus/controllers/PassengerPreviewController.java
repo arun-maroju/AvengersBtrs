@@ -13,7 +13,7 @@ import com.avengers.bus.inputModels.Passengers;
 @Controller
 public class PassengerPreviewController {
 
-	@RequestMapping(value = "passengerPreview", method = RequestMethod.POST)
+	@RequestMapping(value = "passengerPreview2", method = RequestMethod.POST)
 	public String getPassengerDetails(@RequestParam("passenger_id[]") String[] passengerIds,
 			@RequestParam("seat_number[]") int[] passengerSeatNos,
 			@RequestParam("passenger_name[]") String[] passengerNames,

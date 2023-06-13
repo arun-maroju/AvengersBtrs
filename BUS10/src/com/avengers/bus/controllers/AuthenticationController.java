@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.avengers.bus.dtoModels.Email;
 import com.avengers.bus.dtoModels.Userlist;
+import com.avengers.bus.entityModels.User;
+import com.avengers.bus.services.UserService;
 
 // controller
 @Controller
@@ -17,6 +19,12 @@ public class AuthenticationController {
 
 	Userlist ul = new Userlist();
 	List<Email> el = ul.getuser();
+
+	UserService userService;
+
+	public AuthenticationController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String Login() {
@@ -51,6 +59,13 @@ public class AuthenticationController {
 	@RequestMapping(value = "/reset", method = RequestMethod.GET)
 	public String reset() {
 		return "reset";
+	}
+
+	@RequestMapping(value = "/registerUser", method = RequestMethod.POST)
+	public String registerUser(User u) {
+		System.out.println(u);
+		userService.addUser(u);
+		return "redirect:login";
 	}
 
 }
