@@ -484,6 +484,13 @@
 	            trElement.appendChild(td1);
 	            trElement.appendChild(td2);
 	            fareDiv.appendChild(trElement);
+	            var tf=document.getElementById('tf').textContent;
+	            var tfInt=parseInt(tf);
+	            tfInt=tfInt+sfInt;
+	            tfstr=tfInt.toString();
+	            console.log("Hello tfstr "+tfstr);
+	            document.getElementById('tf').textContent=tfstr;
+	            
 	            
 	            
 	            if ($(this).css('background-color') === 'rgb(255, 192, 203)') {
@@ -497,6 +504,28 @@
 	        } else {
 	            // Decrement count and remove seat from selected_seats object
 	            seats_selected_count--;
+	            var fareDiv = document.getElementById('fare');
+	            var table = fareDiv.querySelector('table');
+	            var rowsToDelete = table.querySelectorAll("tr td:first-child");
+	            var rowFare;
+	            for (var i = 0; i < rowsToDelete.length; i++) {
+	              if (rowsToDelete[i].textContent === seatId) {
+	                var row = rowsToDelete[i].parentNode;
+	                
+	                
+	                var fareCell = row.querySelector("td:last-child");
+	                var sf=fareCell.textContent;
+	                var sfInt = parseInt(sf);
+	                var tf=document.getElementById('tf').textContent;
+		            var tfInt=parseInt(tf);
+		            tfInt=tfInt-sfInt;
+		            tfstr=tfInt.toString();
+		            console.log("Hello tfstr "+tfstr);
+		            document.getElementById('tf').textContent=tfstr;
+		            
+	                row.parentNode.removeChild(row);
+	              }
+	            }
 	            delete selected_seats[seatId];
 	            console.log("seat de-selected");
 
@@ -538,10 +567,12 @@
 	            td2.textContent = bfInt;
 	            
 	            var tf=document.getElementById('tf').textContent;
-	            var tfInt = parseInt(tf);
-	            var x=tfInt+bfInt;
-	            console.log(x);
-	            tf=x;
+	            var tfInt=parseInt(tf);
+	            tfInt=tfInt+bfInt;
+	            tfstr=tfInt.toString();
+	            console.log("Hello tfstr "+tfstr);
+	            document.getElementById('tf').textContent=tfstr;
+	            
 	            
 	            
 	            
@@ -569,10 +600,23 @@
 	            var fareDiv = document.getElementById('fare');
 	            var table = fareDiv.querySelector('table');
 	            var rowsToDelete = table.querySelectorAll("tr td:first-child");
+	            
+	            var rowFare;
 
 	            for (var i = 0; i < rowsToDelete.length; i++) {
 	              if (rowsToDelete[i].textContent === seatId) {
 	                var row = rowsToDelete[i].parentNode;
+	                
+	                var fareCell = row.querySelector("td:last-child");
+	                var bf=fareCell.textContent;
+	                var bfInt = parseInt(bf);
+	                var tf=document.getElementById('tf').textContent;
+		            var tfInt=parseInt(tf);
+		            tfInt=tfInt-bfInt;
+		            tfstr=tfInt.toString();
+		            console.log("Hello tfstr "+tfstr);
+		            document.getElementById('tf').textContent=tfstr;
+	                
 	                row.parentNode.removeChild(row);
 	              }
 	            }
