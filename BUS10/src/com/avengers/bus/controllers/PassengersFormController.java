@@ -22,12 +22,4 @@ public class PassengersFormController {
 		return mav;
 	}
 
-	// @RequestMapping(value = "/passengers1", method = RequestMethod.GET)
-	// public ModelAndView getBusses(SearchBusInput sbi) {
-	//
-	// ModelAndView mav = new ModelAndView("passengers1");
-	//
-	// return mav;
-	// }
-
 }

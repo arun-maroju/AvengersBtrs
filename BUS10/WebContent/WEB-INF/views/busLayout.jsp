@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.avengers.bus.dtoModels.*,com.avengers.bus.inputModels.*,java.util.*" %>
+<%@ page import="com.avengers.bus.entityModels.*,com.avengers.bus.dtoModels.*,com.avengers.bus.inputModels.*,java.util.*" %>
 <%@ page import="com.google.gson.Gson" %>
 
 <!DOCTYPE html>
@@ -236,7 +236,6 @@
                 <div class="bus-details">
                 	<div>
                     <p><span class="label">Type:</span> <span class="time black"><%= b.getBsty_title() %></span></p>
-              <span class="label ">Journey Time:</span> <span class="time red"><%= b.getDuration()+" Hours" %></span>
                      
                     </div>
                      <div>
@@ -253,8 +252,8 @@
                         <p><span class="label ">Available Seats:</span> <span class="time green"><%= b.getAvailable_seats() %></span></p>
                     </div>
                     <div>
-                        <p><span class="label date">Seat Fare:</span> <span class="time green"><%= b.getSeat_fare() %></span></p>
-                        <p><span class="label ">Berth Fare:</span> <span class="time green"><%= b.getBerth_fare() %></span></p>
+                        <p><span class="label date">Seat Fare:</span> <span class="time green" id='sf'><%= b.getSeat_fare() %></span></p>
+                        <p><span class="label ">Berth Fare:</span> <span class="time green" id='bf'><%= b.getBerth_fare() %></span></p>
                     </div>
                     
                 </div>
@@ -429,6 +428,13 @@
     <h3 class="deck-names"> Upper Deck</h3>
     </div>
     </div>
+    <div class='fare' id='fare' name='fare'>
+    <table id='fareTable'>
+    <tr><th>Seat</th><th>Fare</th></tr>
+    
+    </table>
+    <p><span class="label ">Total Fare:</span> <span class="time green" id='tf'>0</span></p>
+    </div>
     
     	  <% Gson gson = new Gson();
 	    String seatStatusJson = gson.toJson(sl);
@@ -465,6 +471,27 @@
 	        if ($(this).hasClass('selected')) {
 	            // Increment count and add seat to selected_seats object
 	            seats_selected_count++;
+	            var fareDiv = document.getElementById('fareTable');
+	            var trElement = document.createElement('tr');
+
+	            var td1 = document.createElement('td');
+	            td1.textContent =seatId ;
+
+	            var td2 = document.createElement('td');
+	            var sf=document.getElementById('sf').textContent;
+	            var sfInt = parseInt(sf);
+	            td2.textContent = sfInt;
+	            trElement.appendChild(td1);
+	            trElement.appendChild(td2);
+	            fareDiv.appendChild(trElement);
+	            var tf=document.getElementById('tf').textContent;
+	            var tfInt=parseInt(tf);
+	            tfInt=tfInt+sfInt;
+	            tfstr=tfInt.toString();
+	            console.log("Hello tfstr "+tfstr);
+	            document.getElementById('tf').textContent=tfstr;
+	            
+	            
 	            
 	            if ($(this).css('background-color') === 'rgb(255, 192, 203)') {
 	            	selected_seats[seatId] = "Female";
@@ -477,6 +504,28 @@
 	        } else {
 	            // Decrement count and remove seat from selected_seats object
 	            seats_selected_count--;
+	            var fareDiv = document.getElementById('fare');
+	            var table = fareDiv.querySelector('table');
+	            var rowsToDelete = table.querySelectorAll("tr td:first-child");
+	            var rowFare;
+	            for (var i = 0; i < rowsToDelete.length; i++) {
+	              if (rowsToDelete[i].textContent === seatId) {
+	                var row = rowsToDelete[i].parentNode;
+	                
+	                
+	                var fareCell = row.querySelector("td:last-child");
+	                var sf=fareCell.textContent;
+	                var sfInt = parseInt(sf);
+	                var tf=document.getElementById('tf').textContent;
+		            var tfInt=parseInt(tf);
+		            tfInt=tfInt-sfInt;
+		            tfstr=tfInt.toString();
+		            console.log("Hello tfstr "+tfstr);
+		            document.getElementById('tf').textContent=tfstr;
+		            
+	                row.parentNode.removeChild(row);
+	              }
+	            }
 	            delete selected_seats[seatId];
 	            console.log("seat de-selected");
 
@@ -506,6 +555,32 @@
 	        var seatId = $(this).attr('id');
 	        if ($(this).hasClass('selected')) {
 	        	seats_selected_count++;
+	        	var fareDiv = document.getElementById('fareTable');
+	            var trElement = document.createElement('tr');
+
+	            var td1 = document.createElement('td');
+	            td1.textContent =seatId ;
+
+	            var td2 = document.createElement('td');
+	            var bf=document.getElementById('bf').textContent;
+	            var bfInt = parseInt(bf);
+	            td2.textContent = bfInt;
+	            
+	            var tf=document.getElementById('tf').textContent;
+	            var tfInt=parseInt(tf);
+	            tfInt=tfInt+bfInt;
+	            tfstr=tfInt.toString();
+	            console.log("Hello tfstr "+tfstr);
+	            document.getElementById('tf').textContent=tfstr;
+	            
+	            
+	            
+	            
+
+	            trElement.appendChild(td1);
+	            trElement.appendChild(td2);
+
+	            fareDiv.appendChild(trElement);
 	            // Increment count and add seat to selected_seats object
 	        	if ($(this).css('background-color') === 'rgb(255, 192, 203)') {
 	            	selected_seats[seatId] = "Female";
@@ -515,9 +590,36 @@
 		            selected_seats[seatId] = "Any";
 	            	}  
 	            console.log("seat selected");
+	            
+
+	            
+	            
 	        } else {
 	            // Decrement count and remove seat from selected_seats object
 	            seats_selected_count--;
+	            var fareDiv = document.getElementById('fare');
+	            var table = fareDiv.querySelector('table');
+	            var rowsToDelete = table.querySelectorAll("tr td:first-child");
+	            
+	            var rowFare;
+
+	            for (var i = 0; i < rowsToDelete.length; i++) {
+	              if (rowsToDelete[i].textContent === seatId) {
+	                var row = rowsToDelete[i].parentNode;
+	                
+	                var fareCell = row.querySelector("td:last-child");
+	                var bf=fareCell.textContent;
+	                var bfInt = parseInt(bf);
+	                var tf=document.getElementById('tf').textContent;
+		            var tfInt=parseInt(tf);
+		            tfInt=tfInt-bfInt;
+		            tfstr=tfInt.toString();
+		            console.log("Hello tfstr "+tfstr);
+		            document.getElementById('tf').textContent=tfstr;
+	                
+	                row.parentNode.removeChild(row);
+	              }
+	            }
 	            delete selected_seats[seatId];
 	            console.log("seat de-selected");
 
@@ -543,7 +645,7 @@
           // Check seat status and gender to determine blocking and color
           if (status) {
         	  console.log("Executing..1");
-              if (gender === 'Male') {
+              if (gender === 'Male' || gender==='Other') {
             	  console.log("Executing..2");
 
                   seatElement.addClass('disabled');

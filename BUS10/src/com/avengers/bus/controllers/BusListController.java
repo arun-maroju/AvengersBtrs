@@ -25,8 +25,7 @@ public class BusListController {
 	@RequestMapping(value = "/getBusList", method = RequestMethod.POST)
 	public ModelAndView getBusses(SearchBusInput sbi) {
 		System.out.println("Hello Im workingl." + sbi);
-		// System.out.println(fssId);
-		// System.out.println(s + " " + travelClass + " " + date);
+
 		List<BusSearchListDto> buses;
 		if (sbi.getTravelClass() > 0) {
 			buses = busListDao.getBusList(sbi);
@@ -42,8 +41,6 @@ public class BusListController {
 
 		ModelAndView mav = new ModelAndView("busList");
 		mav.addObject("buses", buses);
-		// BusSearchListDto bsl = buses.get(1);
-		// System.out.println(bsl);
 
 		return mav;
 	}

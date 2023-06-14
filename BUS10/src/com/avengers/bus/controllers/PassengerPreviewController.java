@@ -1,5 +1,6 @@
 package com.avengers.bus.controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,7 @@ import com.avengers.bus.inputModels.Passengers;
 
 @Controller
 public class PassengerPreviewController {
-	
-	
+
 	@Autowired
 	private HttpSession httpSession;
 
@@ -44,9 +44,9 @@ public class PassengerPreviewController {
 			System.out.println("Passenger Gender: " + passengerGenders[i]);
 			System.out.println("-------------------------");
 		}
-
+		BusSearchListDto bus = (BusSearchListDto) httpSession.getAttribute("selectedBus");
 		List<Passengers> passengersList = new ArrayList<Passengers>();
-
+		double totalFare = 0;
 		for (int i = 0; i < passengerIds.length; i++) {
 			Passengers p = new Passengers();
 			p.setPassenger_id(passengerIds[i]);
@@ -54,24 +54,20 @@ public class PassengerPreviewController {
 			p.setPassenger_name(passengerNames[i]);
 			p.setPassenger_age(passengerAges[i]);
 			p.setPassenger_gender(passengerGenders[i]);
+			if (passengerSeatNos[i] <= 16)
+				p.setSeat_fare(bus.getSeat_fare());
+			else
+				p.setSeat_fare(bus.getBerth_fare());
 			passengersList.add(p);
+			totalFare += p.getSeat_fare();
 			System.out.println("-------------------------");
 		}
 
 		for (Passengers p : passengersList) {
 			System.out.println(p);
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		BusSearchListDto bus= (BusSearchListDto) httpSession.getAttribute("selectedBus");
-		
-		Ticket ticket=new Ticket();
+
+		Ticket ticket = new Ticket();
 		ticket.setTo(bus.getDestination());
 		ticket.setFrom(bus.getSource());
 		ticket.setBus_type(bus.getBsty_title());
@@ -81,15 +77,21 @@ public class PassengerPreviewController {
 		ticket.setService_no(bus.getService_id());
 		ticket.setTrip_no(bus.getTrip_id());
 		ticket.setPassengers(passengersList);
-		ticket.setTotalFare(1000);
-		ticket.setTicketNo(98765432);
+		ticket.setTotalFare(totalFare);
+
+		LocalDate currentDate = LocalDate.now();
+		int year = currentDate.getYear();
+		int month = currentDate.getMonthValue();
+		int day = currentDate.getDayOfMonth();
+		String ticketNo = bus.getService_id() + "" + bus.getTrip_id() + "" + year + "" + month + "" + day + "";
+		// + System.currentTimeMillis();
+		ticket.setTicketNo(ticketNo);
 		ticket.setNumberOfPassengers(passengersList.size());
-		
+		httpSession.setAttribute("ticket", ticket);
 		System.out.println(ticket);
-		
-		ModelAndView mav=new ModelAndView("ticketPreview");
-		mav.addObject("ticket",ticket);
-		
+
+		ModelAndView mav = new ModelAndView("ticketPreview");
+		mav.addObject("ticket", ticket);
 
 		System.out.println("IN passenger preview controller..");
 		return mav;

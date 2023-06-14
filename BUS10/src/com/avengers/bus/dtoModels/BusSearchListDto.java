@@ -24,30 +24,31 @@ public class BusSearchListDto {
 		return service_id;
 	}
 
-	public String getDuration()
-	{
-       
-        LocalTime localTime1 = depature.toLocalTime();
-        LocalTime localTime2 = arrival.toLocalTime();
+	public String getDuration() {
 
-        // Calculate the duration between two LocalTime objects
-        Duration duration;
-        if (localTime2.isAfter(localTime1)) {
-            duration = Duration.between(localTime1, localTime2);
-        } else {
-            duration = Duration.between(localTime1, LocalTime.MAX).plus(Duration.between(LocalTime.MIN, localTime2)).plusMinutes(1);
-        }
+		LocalTime localTime1 = depature.toLocalTime();
+		LocalTime localTime2 = arrival.toLocalTime();
 
-        // Get the time difference in hours and minutes
-        long hours = duration.toHours();
-        long minutes = duration.toMinutes() % 60;
+		// Calculate the duration between two LocalTime objects
+		Duration duration;
+		if (localTime2.isAfter(localTime1)) {
+			duration = Duration.between(localTime1, localTime2);
+		} else {
+			duration = Duration.between(localTime1, LocalTime.MAX).plus(Duration.between(LocalTime.MIN, localTime2))
+					.plusMinutes(1);
+		}
 
-        // Format the output with leading zeros
-        String formattedHours = String.format("%02d", hours);
-        String formattedMinutes = String.format("%02d", minutes);
-        
-        return formattedHours + " : " + formattedMinutes;
+		// Get the time difference in hours and minutes
+		long hours = duration.toHours();
+		long minutes = duration.toMinutes() % 60;
+
+		// Format the output with leading zeros
+		String formattedHours = String.format("%02d", hours);
+		String formattedMinutes = String.format("%02d", minutes);
+
+		return formattedHours + " : " + formattedMinutes;
 	}
+
 	public void setService_id(int service_id) {
 		this.service_id = service_id;
 	}
@@ -80,24 +81,24 @@ public class BusSearchListDto {
 		return trip_date;
 	}
 
-	public void setTrip_date(Date trip_date) {
-		this.trip_date = trip_date;
+	public void setTrip_date(String trip_date) {
+		this.trip_date = Date.valueOf(trip_date);
 	}
 
 	public Time getDepature() {
 		return depature;
 	}
 
-	public void setDepature(Time depature) {
-		this.depature = depature;
+	public void setDepature(String depature) {
+		this.depature = Time.valueOf(depature);
 	}
 
 	public Time getArrival() {
 		return arrival;
 	}
 
-	public void setArrival(Time arrival) {
-		this.arrival = arrival;
+	public void setArrival(String arrival) {
+		this.arrival = Time.valueOf(arrival);
 	}
 
 	public String getBsty_title() {

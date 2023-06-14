@@ -3,6 +3,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.avengers.bus.dtoModels.*" %>
+<%@ page import="com.avengers.bus.inputModels.*" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,23 +94,27 @@
             </tr>
             <tr>
                 <td>Service No</td>
-                <td>${ticket.serviceNo}</td>
+                <td>${ticket.service_no}</td>
             </tr>
             <tr>
                 <td>Ticket No</td>
                 <td>${ticket.ticketNo}</td>
             </tr>
             <tr>
+                <td>Payment Id</td>
+                <td>${ticket.payment_id}</td>
+            </tr>
+            <tr>
                 <td>Bus Type</td>
-                <td>${ticket.busType}</td>
+                <td>${ticket.bus_type}</td>
             </tr>
             <tr>
                 <td>Date of Journey</td>
-                <td>${ticket.journeyDate}</td>
+                <td>${ticket.journey_date}</td>
             </tr>
             <tr>
                 <td>Departure Time</td>
-                <td>${ticket.departureTime}</td>
+                <td>${ticket.departure_time}</td>
             </tr>
             <tr>
                 <td>Number of Passengers</td>
@@ -131,12 +137,12 @@
             </tr>
             <c:forEach var="passenger" items="${ticket.passengers}">
                 <tr>
-                    <td>${passenger.passengerId}</td>
-                    <td>${passenger.name}</td>
-                    <td>${passenger.age}</td>
-                    <td>${passenger.gender}</td>
-                    <td>${passenger.fare}</td>
-                    <td>${passenger.seatId}</td>
+                    <td>${passenger.passenger_id}</td>
+                    <td>${passenger.passenger_name}</td>
+                    <td>${passenger.passenger_age}</td>
+                    <td>${passenger.passenger_gender}</td>
+                    <td>${passenger.seat_fare}</td>
+                    <td>${passenger.seat_id}</td>
                 </tr>
             </c:forEach>
         </table>

@@ -27,14 +27,11 @@ public class HomeController {
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String firstPage(Model model) {
-		//
-		// ModelAndView mav = new ModelAndView();
-		// mav.setViewName("home");
+
 		System.out.println("IM in firstPage method..");
 
 		List<Stations> stationsList = stationService.listAll();
 		List<BusTypes> busTypesList = busTypeService.listAll();
-		// set it to the model
 		model.addAttribute("stationList", stationsList);
 		model.addAttribute("busTypeList", busTypesList);
 		return "home";
@@ -45,13 +42,10 @@ public class HomeController {
 	public String getAllStations(Model model) {
 		System.out.println("Stations List JSP Requested");
 
-		// get all employees from DAO
 		List<Stations> stationsList = stationService.listAll();
 
-		// set it to the model
 		model.addAttribute("stationList", stationsList);
 
-		// call the view
 		return "stationList";
 	}
 
