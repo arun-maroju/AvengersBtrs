@@ -123,12 +123,18 @@
                         <p><span class="label ">Destination :</span> <span class="time green"><%= b.getDestination() %></span></p>
                     </div>
                     <div>
-                        <p><span class="label">Departure:</span> <span class="time green"><%= b.getDepature() %></span></p>
+                        <p><span class="label">Departure:</span> <span class="time green"><%= b.getDepature() %></span></p>          
                         <p><span class="label">Arrival:</span> <span class="time green"><%= b.getArrival() %></span></p>
+                        <span class="label ">Travel Time:</span> <span class="time red"><%= b.getDuration() %></span>
+                        
                     </div>
                     <div>
                         <p><span class="label date">Date:</span> <span class="time green"><%= b.getTrip_date() %></span></p>
                         <p><span class="label ">Available Seats:</span> <span class="time green"><%= b.getAvailable_seats() %></span></p>
+                    </div>
+                    <div>
+                        <p><span class="label date">Seat Fare:</span> <span class="time green"><%= b.getSeat_fare() %></span></p>
+                        <p><span class="label ">Berth Fare:</span> <span class="time green"><%= b.getBerth_fare() %></span></p>
                     </div>
              
                     
@@ -143,6 +149,8 @@
                    <input type="hidden" name="depature" value="<%= b.getDepature() %>">                 
                  <input type="hidden" name="bsty_title" value="<%= b.getBsty_title()%>">
                  <input type="hidden" name="available_seats" value="<%= b.getAvailable_seats() %>">
+				<input type="hidden" name="seat_fare" value="<%= b.getSeat_fare()%>">
+                 <input type="hidden" name="berth_fare" value="<%= b.getBerth_fare() %>">
 
                 
                 <button type="submit" value="show" class="btn btn-primary btn-book">View Seats</button>

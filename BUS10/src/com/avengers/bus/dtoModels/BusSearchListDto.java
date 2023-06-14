@@ -2,6 +2,8 @@ package com.avengers.bus.dtoModels;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalTime;
 
 public class BusSearchListDto {
 
@@ -14,11 +16,37 @@ public class BusSearchListDto {
 	private Time arrival;
 	private String bsty_title;
 	private int available_seats;
-	private int seat_fare;
-	private int berth_fare;
+	private double seat_fare;
+	private double berth_fare;
+	private Duration duration;
 
 	public int getService_id() {
 		return service_id;
+	}
+
+	public String getDuration() {
+
+		LocalTime localTime1 = depature.toLocalTime();
+		LocalTime localTime2 = arrival.toLocalTime();
+
+		// Calculate the duration between two LocalTime objects
+		Duration duration;
+		if (localTime2.isAfter(localTime1)) {
+			duration = Duration.between(localTime1, localTime2);
+		} else {
+			duration = Duration.between(localTime1, LocalTime.MAX).plus(Duration.between(LocalTime.MIN, localTime2))
+					.plusMinutes(1);
+		}
+
+		// Get the time difference in hours and minutes
+		long hours = duration.toHours();
+		long minutes = duration.toMinutes() % 60;
+
+		// Format the output with leading zeros
+		String formattedHours = String.format("%02d", hours);
+		String formattedMinutes = String.format("%02d", minutes);
+
+		return formattedHours + " : " + formattedMinutes;
 	}
 
 	public void setService_id(int service_id) {
@@ -53,24 +81,24 @@ public class BusSearchListDto {
 		return trip_date;
 	}
 
-	public void setTrip_date(Date trip_date) {
-		this.trip_date = trip_date;
+	public void setTrip_date(String trip_date) {
+		this.trip_date = Date.valueOf(trip_date);
 	}
 
 	public Time getDepature() {
 		return depature;
 	}
 
-	public void setDepature(Time depature) {
-		this.depature = depature;
+	public void setDepature(String depature) {
+		this.depature = Time.valueOf(depature);
 	}
 
 	public Time getArrival() {
 		return arrival;
 	}
 
-	public void setArrival(Time arrival) {
-		this.arrival = arrival;
+	public void setArrival(String arrival) {
+		this.arrival = Time.valueOf(arrival);
 	}
 
 	public String getBsty_title() {
@@ -89,19 +117,19 @@ public class BusSearchListDto {
 		this.available_seats = available_seats;
 	}
 
-	public int getSeat_fare() {
+	public double getSeat_fare() {
 		return seat_fare;
 	}
 
-	public void setSeat_fare(int seat_fare) {
+	public void setSeat_fare(double seat_fare) {
 		this.seat_fare = seat_fare;
 	}
 
-	public int getBerth_fare() {
+	public double getBerth_fare() {
 		return berth_fare;
 	}
 
-	public void setBerth_fare(int berth_fare) {
+	public void setBerth_fare(double berth_fare) {
 		this.berth_fare = berth_fare;
 	}
 

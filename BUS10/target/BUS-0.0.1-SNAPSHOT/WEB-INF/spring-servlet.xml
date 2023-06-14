@@ -62,5 +62,8 @@
     <bean id="busTypeDao" class="com.avengers.bus.daos.BusTypeDaoImpl" autowire="byName"/>
     <bean id="busTypeService" class="com.avengers.bus.services.BusTypeServiceImpl" autowire="byName"/>
  	  <bean id="busListDao" class="com.avengers.bus.daos.BusListDaoImpl" autowire="byName"/>
-<bean id="mailService" class="com.avengers.bus.services.EmailServiceImpl" autowire="byName"/> 
+	<bean id="mailService" class="com.avengers.bus.services.EmailServiceImpl" autowire="byName"/> 
+	<bean id="userDao" class="com.avengers.bus.daos.UserDaoImpl" autowire="byName"/> 
+	<bean id="userService" class="com.avengers.bus.services.UserServiceImpl" autowire="byName"/> 
+
 </beans>

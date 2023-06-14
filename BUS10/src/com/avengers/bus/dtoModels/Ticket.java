@@ -1,49 +1,59 @@
 package com.avengers.bus.dtoModels;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
+import com.avengers.bus.inputModels.Passengers;
+
 public class Ticket {
-	private String from;
-	private String to;
-	private String serviceNo;
+
 	private String ticketNo;
-	private String busType;
-	private String bookingDateTime;
-	private String transactionId;
-	private LocalDate journeyDate;
-	private LocalTime departureTime;
-	private int numberOfPassengers;
-	private List<Passenger> passengers;
 
-	private double totalFare;
-
-	public Ticket(String from, String to, String serviceNo, String ticketNo, String busType, LocalDate journeyDate,
-			LocalTime departureTime, int numberOfPassengers, List<Passenger> passengers) {
-		this.from = from;
-		this.to = to;
-		this.serviceNo = serviceNo;
-		this.ticketNo = ticketNo;
-		this.busType = busType;
-		this.journeyDate = journeyDate;
-		this.departureTime = departureTime;
-		this.numberOfPassengers = numberOfPassengers;
-		this.passengers = passengers;
-		this.totalFare = totalFare;
-		this.bookingDateTime = "";
-		this.transactionId = "";
+	public String getTicketNo() {
+		return ticketNo;
 	}
 
-	// Getters and Setters
+	public void setTicketNo(String ticketNo) {
+		this.ticketNo = ticketNo;
+	}
+
+	private String from;
+	private String to;
+	private int service_no;
+	private int trip_no;
+	private String bus_type;
+
+	public String getPayment_id() {
+		return payment_id;
+	}
+
+	public void setPayment_id(String payment_id) {
+		this.payment_id = payment_id;
+	}
+
+	private Date journey_date;
+	private Time departure_time;
+	private Time arrival_time;
+	private int numberOfPassengers;
+	private List<Passengers> passengers;
+	private double totalFare;
+	private String payment_id;
+
+	public Time getArrival_time() {
+		return arrival_time;
+	}
+
+	public void setArrival_time(Time arrival_time) {
+		this.arrival_time = arrival_time;
+	}
 
 	@Override
 	public String toString() {
-		return "Ticket Confirmation\n" + "From Station: " + from + "\n" + "To Station: " + to + "\n" + "Service No: "
-				+ serviceNo + "\n" + "Ticket No: " + ticketNo + "\n" + "Bus Type: " + busType + "\n"
-				+ "Date of Journey: " + journeyDate + "\n" + "Departure Time: " + departureTime + "\n"
-				+ "Number of Passengers: " + numberOfPassengers + "\n\n" + "Passenger Details:\n"
-				+ generatePassengerDetailsTable();
+		return "Ticket [ticketNo=" + ticketNo + ", from=" + from + ", to=" + to + ", service_no=" + service_no
+				+ ", trip_no=" + trip_no + ", bus_type=" + bus_type + ", journey_date=" + journey_date
+				+ ", departure_time=" + departure_time + ", arrival_time=" + arrival_time + ", numberOfPassengers="
+				+ numberOfPassengers + ", passengers=" + passengers + ", totalFare=" + totalFare + "]";
 	}
 
 	public String getFrom() {
@@ -62,44 +72,44 @@ public class Ticket {
 		this.to = to;
 	}
 
-	public String getServiceNo() {
-		return serviceNo;
+	public int getService_no() {
+		return service_no;
 	}
 
-	public void setServiceNo(String serviceNo) {
-		this.serviceNo = serviceNo;
+	public void setService_no(int service_no) {
+		this.service_no = service_no;
 	}
 
-	public String getTicketNo() {
-		return ticketNo;
+	public int getTrip_no() {
+		return trip_no;
 	}
 
-	public void setTicketNo(String ticketNo) {
-		this.ticketNo = ticketNo;
+	public void setTrip_no(int trip_no) {
+		this.trip_no = trip_no;
 	}
 
-	public String getBusType() {
-		return busType;
+	public String getBus_type() {
+		return bus_type;
 	}
 
-	public void setBusType(String busType) {
-		this.busType = busType;
+	public void setBus_type(String bus_type) {
+		this.bus_type = bus_type;
 	}
 
-	public LocalDate getJourneyDate() {
-		return journeyDate;
+	public Date getJourney_date() {
+		return journey_date;
 	}
 
-	public void setJourneyDate(LocalDate journeyDate) {
-		this.journeyDate = journeyDate;
+	public void setJourney_date(Date journey_date) {
+		this.journey_date = journey_date;
 	}
 
-	public LocalTime getDepartureTime() {
-		return departureTime;
+	public Time getDeparture_time() {
+		return departure_time;
 	}
 
-	public void setDepartureTime(LocalTime departureTime) {
-		this.departureTime = departureTime;
+	public void setDeparture_time(Time departure_time) {
+		this.departure_time = departure_time;
 	}
 
 	public int getNumberOfPassengers() {
@@ -110,46 +120,20 @@ public class Ticket {
 		this.numberOfPassengers = numberOfPassengers;
 	}
 
-	public int getTotalFare() {
-		return numberOfPassengers;
-	}
-
-	public void setTotalFare(int totalFare) {
-		this.totalFare = totalFare;
-	}
-
-	public List<Passenger> getPassengers() {
+	public List<Passengers> getPassengers() {
 		return passengers;
 	}
 
-	public void setPassengers(List<Passenger> passengers) {
+	public void setPassengers(List<Passengers> passengers) {
 		this.passengers = passengers;
 	}
 
-	public String getBookingDateTime() {
-		return bookingDateTime;
+	public int getTotalFare() {
+		return (int) totalFare;
 	}
 
-	public void setBookingDateTime(String bookingDateTime) {
-		this.bookingDateTime = bookingDateTime;
+	public void setTotalFare(double totalFare) {
+		this.totalFare = totalFare;
 	}
 
-	public String getTransactionId() {
-		return transactionId;
-	}
-
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
-	}
-
-	private String generatePassengerDetailsTable() {
-		StringBuilder table = new StringBuilder();
-		table.append("Passenger ID\tName\tAge\tGender\tFare\tSeat ID\n");
-		for (Passenger passenger : passengers) {
-			table.append(passenger.getPassengerId()).append("\t\t").append(passenger.getName()).append("\t")
-					.append(passenger.getAge()).append("\t").append(passenger.getGender()).append("\t")
-					.append(passenger.getFare()).append("\t").append(passenger.getSeatId()).append("\n");
-		}
-		return table.toString();
-	}
 }

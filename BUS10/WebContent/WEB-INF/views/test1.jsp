@@ -8,6 +8,26 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+<style>
+ .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    background-color: #333;
+    padding: 10px;
+  }
+  
+  .content
+  {
+  		
+  }
+
+
+</style>
+
 	<script>
   $(document).ready(function() {
 	  
@@ -26,7 +46,7 @@
 	      }
 	    });
 	  $.ajax({
-	      url: '/',
+	      url: 'home',
 	      method: 'GET',
 	      success: function(response) {
 	    	  console.log("home page getted..")
@@ -47,14 +67,16 @@
 
 </head>
 <body>
-		<div id="nav-bar">
+		<div id="nav-bar" class="navbar">
 		
 		
 		</div>
-		<div></div><div></div>
-		<div id="content">
+		<div><h1>Hello This is seperation..</h1></div>
+		<div></div>
 		
 		
+		<div id="content" class="content">
 		</div>
+		
 </body>
 </html>

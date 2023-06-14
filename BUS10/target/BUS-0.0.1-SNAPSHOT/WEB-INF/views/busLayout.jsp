@@ -236,6 +236,7 @@
                 <div class="bus-details">
                 	<div>
                     <p><span class="label">Type:</span> <span class="time black"><%= b.getBsty_title() %></span></p>
+              <span class="label ">Journey Time:</span> <span class="time red"><%= b.getDuration()+" Hours" %></span>
                      
                     </div>
                      <div>
@@ -251,7 +252,10 @@
                         <p><span class="label date">Date:</span> <span class="time green"><%= b.getTrip_date() %></span></p>
                         <p><span class="label ">Available Seats:</span> <span class="time green"><%= b.getAvailable_seats() %></span></p>
                     </div>
-             
+                    <div>
+                        <p><span class="label date">Seat Fare:</span> <span class="time green"><%= b.getSeat_fare() %></span></p>
+                        <p><span class="label ">Berth Fare:</span> <span class="time green"><%= b.getBerth_fare() %></span></p>
+                    </div>
                     
                 </div>
  
