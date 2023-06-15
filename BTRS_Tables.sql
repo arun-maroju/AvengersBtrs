@@ -1552,5 +1552,32 @@ WHERE service_id=532;
 
     
     select* from btrs_user_passengers
+	
+	
+	
+	
+	
+	
+	
+	
+	CREATE TABLE btrs_user_passengers (
+  user_id INT,
+  passenger_name VARCHAR(50),
+  age INT,
+  gender VARCHAR(10),
+  PRIMARY KEY (user_id, passenger_name, age, gender),
+  FOREIGN KEY (user_id) REFERENCES btrs_users(user_id)
+);
+
+DROP TABLE btrs_user_passengers
+
+
+ insert into btrs_user_passengers values(1,'Streak',22,'Male');
+    insert into btrs_user_passengers values(1,'Imran',22,'Male');
+    
+    insert into btrs_user_passengers values(9,'Vamsi',69,'Other');
+    insert into btrs_user_passengers values(9,'Vamsi',22,'Female');
+    insert into btrs_user_passengers values(9,'M. Vamsi',22,'Female');
+    insert into btrs_user_passengers values(9,'Vamsi. M',22,'Female')
     
     
