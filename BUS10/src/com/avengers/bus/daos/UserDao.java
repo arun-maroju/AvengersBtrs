@@ -1,7 +1,12 @@
 package com.avengers.bus.daos;
 
+import java.util.List;
+
 import com.avengers.bus.entityModels.User;
 
 public interface UserDao {
-	public void persistUser(User user);
+	public User findByEmail(String email);
+
+	public List<User> getAllUsers();
+
 }

@@ -70,6 +70,9 @@
 	<bean id="userPassengersService" class="com.avengers.bus.services.UserPassengersServiceImpl" autowire="byName"/> 
 	
 	
+	<bean id="countdao" class="com.avengers.bus.daos.CountsDAOImpl" autowire="byName" />
+	<bean id="listdao" class="com.avengers.bus.daos.ListsDAOImpl" autowire="byName" />
+	<bean id="detaildao" class="com.avengers.bus.daos.DetailsDAOImpl" autowire="byName" />
 	
 	
 

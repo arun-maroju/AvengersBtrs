@@ -17,15 +17,6 @@ public class Bus {
 	int bus_no_seats;
 	String bus_status;
 
-	public Bus(int bus_id, String regno, int type_id, int bus_no_seats, String bus_status) {
-		super();
-		this.bus_id = bus_id;
-		this.regno = regno;
-		this.type_id = type_id;
-		this.bus_no_seats = bus_no_seats;
-		this.bus_status = bus_status;
-	}
-
 	public int getBus_id() {
 		return bus_id;
 	}

@@ -1,5 +1,7 @@
 package com.avengers.bus.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +11,26 @@ import com.avengers.bus.entityModels.User;
 
 public class UserServiceImpl implements UserService {
 
-	UserDao userDao;
-
 	@Autowired
-	public UserServiceImpl(UserDao userDao) {
-		this.userDao = userDao;
-	}
+	private UserDao userDao;
 
 	@Override
-	@Transactional
-	public void addUser(User user) {
-		userDao.persistUser(user);
+	public boolean verifylogin(String email, String password) {
+		System.out.println("im in service  verify method");
+
+		User user = userDao.findByEmail(email);
+		if (user != null && user.getPassword().equals(password)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Transactional()
+	public List<User> listAll() {
+		List<User> u1 = userDao.getAllUsers();
+		System.out.println(u1.toString());
+		return userDao.getAllUsers();
+
 	}
 
 }
