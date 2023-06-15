@@ -1,91 +1,116 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.avengers.bus.dummyModels.*" %>
+<%@ page import="com.avengers.bus.entityModels.*" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Passenger Management</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-        }
+  <style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
 
-        .container {
-            max-width: 800px;
-            padding: 20px;
-            background-color: #f2f2f2;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+  .container {
+    max-width: 800px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-        .passenger-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 10px;
-            margin-bottom: 10px;
-        }
+  .passenger-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-bottom: 10px;
+  }
 
-        .passenger-container input,
-        .passenger-container select {
-            width: 100%;
-            padding: 8px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        
-        .dropbtn {
-            background-color: #04AA6D;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-        }
+  .passenger-container input,
+  .passenger-container select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
 
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+  .dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 8px;
+    font-size: 12px;
+    border: none;
+  }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
 
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
 
-        .dropdown-content a:hover {
-            background-color: #ddd;
-        }
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
 
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
 
-        .dropdown:hover .dropbtn {
-            background-color: #3e8e41;
-        }
-    </style>
+  .dropdown:hover .dropdown-content {
+    display: inline;
+  }
+
+  .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+  }
+
+  .grid-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 200px;
+  }
+
+  .table-container {
+    flex-shrink: 0;
+    margin-left: auto; 
+    margin-top: 0px;
+  }
+
+  .container {
+    flex-grow: 1;
+    padding: 20px;
+  }
+
+  .table-container table {
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+  }
+</style>
+
+
     
     <!-- Add Bootstrap CDN link here -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -104,47 +129,7 @@
     int i = 1;
 %>
 
-<table class="table table-striped">
-    <thead class="thead-dark">
-    <tr>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Gender</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%
-        Userlist userlist = new Userlist();
-        List<User> userList = userlist.getuser();
-        for (User user : userList) {
-    %>
-    <tr>
-        <td><%= user.getName() %></td>
-        <td><%= user.getAge() %></td>
-        <td><%= user.getGender() %></td>
-        <td>
-            <div class="dropdown">
-                <button class="dropbtn">Select Seat Number</button>
-                <div class="dropdown-content">
-                    <%
-                        for (Map.Entry<String, String> entry : selectedSeatsData.entrySet()) {
-                            String seatNumber = entry.getKey();
-                    %>
-                    <a href="#" onclick='fillFormFields(this)'><%= seatNumber %></a>
-                    <%
-                        }
-                    %>
-                </div>
-            </div>
-        </td>
-    </tr>
-    <%
-        }
-    %>
-    </tbody>
-</table>
-
+<div class="grid-container">
 <div class="container">
     <h1>Passengers Details</h1>
     <form action="passengerPreview" method="POST">
@@ -177,12 +162,65 @@
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+        
     </form>
+    <button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+</div>
+
+<div class="table-container">
+<h3>Previous passenger details</h3>
+<table class="table table-striped" border='1'>
+    <thead class="thead-dark">
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+   
+        List<UserPassengers> userList = (List<UserPassengers>) request.getAttribute("userList");
+        for (UserPassengers user : userList) {
+    %>
+    <tr>
+        <td><%= user.getPassenger_name() %></td>
+        <td><%= user.getAge() %></td>
+        <td><%= user.getGender() %></td>
+        <td>
+            <div class="dropdown">
+                <button class="dropbtn">Select Seat Number</button>
+                <div class="dropdown-content">
+                    <%
+                        for (Map.Entry<String, String> entry : selectedSeatsData.entrySet()) {
+                            String seatNumber = entry.getKey();
+                    %>
+                    <a href="#" onclick='fillFormFields(this)'><%= seatNumber %></a>
+                    <%
+                        }
+                    %>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <%
+        }
+    %>
+    </tbody>
+</table>
+</div>
+
 </div>
 
 <script>
+	
     function goBack() {
+    	
+    	
+    	  if (window.location.href.indexOf("#") > -1) {
+    		    window.history.back();
+    		  }
         window.history.back();
     }
 
