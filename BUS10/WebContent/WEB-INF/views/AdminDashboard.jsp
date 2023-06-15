@@ -151,6 +151,8 @@
       <th>Seats Available</th>
       <th>Collection</th>
       <th>       </th>
+      <th>       </th>
+      
       
     </tr>
   </thead>
@@ -320,6 +322,27 @@
         </tr>
     </table>
 </div>
+
+
+<div id="servicePassengerPopupContent" style="display: none;">
+    <p>Service ID: <span id="passengerServiceId"><input type='textbox' id='sid' disabled></span></p>
+            
+     <table>
+  <thead>
+    <tr>
+      <th>Booking Id</th><th>Seat No</th><th>Name</th><th>Age</th><th>Gender</th>
+
+    </tr>
+  </thead>
+  <tbody id="servicePassengerTable">
+     
+    <!-- Add more rows as needed -->
+  </tbody>
+</table>
+     
+    
+</div>
+
 
 
 <div id="routePopupContent" style="display: none;">
@@ -824,6 +847,14 @@
                         viewDetailsButton.addEventListener("click", createViewDetailsHandler(service));
                         viewDetailsCell.appendChild(viewDetailsButton);
                         row.appendChild(viewDetailsCell);
+                        
+                        
+                        var passChartCell = document.createElement("td");
+                        var passChartButton = document.createElement("button");
+                        passChartButton.textContent = "Get Passengers Chart";
+                        passChartButton.addEventListener("click", createpassChartHandler(service));
+                        passChartCell.appendChild(passChartButton);
+                        row.appendChild(passChartCell);
 
                         tableBody.appendChild(row);
                     }
@@ -841,6 +872,92 @@
             document.getElementById("paymentList").style.display = "none";
         }
 
+        function createpassChartHandler(service){
+        	return function() {
+                $.ajax({
+                    url: "viewServicePassengerDetails", // Replace with the actual URL of your controller endpoint
+                    method: "GET",
+                    data: { serviceId: service.service_id },
+                    success: function(response) {
+                        // Handle the success response from the controller
+                        console.log("Service details retrieved successfully:", response);
+                        
+                        // Process the retrieved service details as needed
+                        var popupContent = document.getElementById("servicePassengerPopupContent");
+                        
+                        // Parse the JSON response
+                        var pass = JSON.parse(response);
+                        
+                        // Set the values in the popup content
+                        document.getElementById("sid").value = pass[0].serviceId;
+                        var tableBody2 = document.querySelector("#servicePassengerPopupContent table tbody");
+                        tableBody2.innerHTML="";
+                        
+                        
+                        // Iterate over the routes and populate the table
+                        for (var i = 0; i < pass.length; i++) {
+                            var passenger = pass[i];
+                            document.getElementById("sid").value = passenger.serviceId;
+                            var row = document.createElement("tr");
+
+                            var bookingIdCell = document.createElement("td");
+                            bookingIdCell.textContent = passenger.booking_id;
+                            row.appendChild(bookingIdCell);
+                            
+                            var seatNoCell = document.createElement("td");
+                            seatNoCell.textContent = passenger.seat_no;
+                            row.appendChild(seatNoCell);
+                            
+                            var nameCell = document.createElement("td");
+                            nameCell.textContent = passenger.passenger_name;
+                            row.appendChild(nameCell);
+                            
+                            var ageCell = document.createElement("td");
+                            ageCell.textContent = passenger.age;
+                            row.appendChild(ageCell);
+                            
+                            var genderCell = document.createElement("td");
+                            genderCell.textContent = passenger.gender;
+                            row.appendChild(genderCell);
+                            
+                            
+                            
+                            tableBody2.appendChild(row);
+                        }
+
+                        // Show the popup content
+                        popupContent.style.display = "block";
+                        
+                        // Create a popup element
+                        var popup = document.createElement("div");
+                        popup.classList.add("popup");
+                        
+                        // Clone the popup content and append it to the popup element
+                        var content = popupContent.cloneNode(true);
+                        content.style.display = "block";
+                        popup.appendChild(content);
+                        
+                        // Append the popup to the body
+                        document.body.appendChild(popup);
+                        
+                        // Close the popup when clicked outside of it
+                        popup.addEventListener("click", function(event) {
+                            if (event.target === popup) {
+                                popup.remove();
+                                popupContent.style.display = "none";
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle the error response from the controller
+                        console.error("AJAX request failed: " + status + ", " + error);
+                    }
+                });
+            };
+
+        }
+        
+        
         function createViewDetailsHandler(service) {
             return function() {
                 $.ajax({

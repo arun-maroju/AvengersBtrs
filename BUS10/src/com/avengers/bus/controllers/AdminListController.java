@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.avengers.bus.daos.ListsDAO;
@@ -54,4 +55,15 @@ public class AdminListController {
 		return routesJson;
 
 	}
+	
+	@RequestMapping(value = "/viewServicePassengerDetails", method = RequestMethod.GET)
+	@ResponseBody
+	public String ticketPassengerController(@RequestParam("serviceId") String service) {
+		FetchList fl = new FetchList(ldao);
+		System.out.println("In ticketPassengerController");
+		String routesJson = fl.getTicketPassengerList(service);
+		return routesJson;
+
+	}
+	
 }
