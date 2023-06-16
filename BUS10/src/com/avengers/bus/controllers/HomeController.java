@@ -63,4 +63,16 @@ public class HomeController {
 		return "test1";
 	}
 
+	@RequestMapping(value = "/contact", method = RequestMethod.GET)
+	public String contact() {
+
+		return "contact";
+	}
+	
+	@RequestMapping(value = "/about", method = RequestMethod.GET)
+	public String about() {
+
+		return "about";
+	}
+
 }

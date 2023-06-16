@@ -101,7 +101,9 @@
     </style>
 </head>
 <body>
-
+<jsp:include page="navbar.jsp">
+  <jsp:param name="currentPage" value="home" />
+</jsp:include>
 
     <div class="container">
         <h1 class="text-center mb-4" style="color:black">Available Services</h1>

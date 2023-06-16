@@ -100,7 +100,9 @@
 
 
 </head>
-
+<jsp:include page="navbar.jsp">
+  <jsp:param name="currentPage" value="home" />
+</jsp:include>
 <body>
   <div class="container">
   	<div id="otp-block">

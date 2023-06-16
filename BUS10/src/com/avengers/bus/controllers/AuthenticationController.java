@@ -38,7 +38,7 @@ public class AuthenticationController {
 
 		if (isMatched) {
 			model.addAttribute("email", username);
-			return "redirect:/";
+			return "redirect:/home";
 
 		} else {
 			model.addAttribute("alert", "Invalid login credentials");

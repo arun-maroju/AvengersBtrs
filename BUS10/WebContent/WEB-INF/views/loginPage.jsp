@@ -96,6 +96,9 @@
   </style>
 </head>
 <body>
+<jsp:include page="navbar.jsp">
+  <jsp:param name="currentPage" value="home" />
+</jsp:include>
   <div class="container">
     <h1>Login</h1>
     
@@ -103,7 +106,7 @@
         <p style="color: red;"><%= request.getAttribute("alert") %></p>
     <% } %>
     
-    <form action="successlogin" method="post">
+    <form action="home" method="get">
       <label>Username:</label>
       <input type="email" name="email" id="email"><br>
       <label for="pwd">Password:</label>

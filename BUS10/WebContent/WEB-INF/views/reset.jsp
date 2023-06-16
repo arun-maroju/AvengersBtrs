@@ -97,6 +97,10 @@
   
 </head>
 <body>
+<jsp:include page="navbar.jsp">
+  <jsp:param name="currentPage" value="home" />
+</jsp:include>
+
 <div class="container">
   <h1>Reset Password</h1>
   

@@ -19,12 +19,14 @@
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+
 <style>
 /* Styles */
 
 body {
   background-color: white;
   padding: 20px;
+  
 }
 
 .container {
@@ -34,6 +36,7 @@ body {
 
 .form-group {
   margin-bottom: 20px;
+  margin-top: 50px;
 }
 
 label {
@@ -84,7 +87,7 @@ button:hover {
 body{
   background-image: url('https://static.abhibus.com/assets/img/bus-seach-bg.png');
   background-repeat: no-repeat;
-  background-size: 100% 170%;
+  background-size: 100% 150%;
 }
 
 
@@ -92,17 +95,17 @@ body{
   max-width: 500px;
   margin: 0 auto;
 }
+
+
+
+
+
 </style>
 
 <script>
 
 $(document).ready(function(){
-	
-	
-	
-	
-	
-	
+
   $("#searchBuses").click(function(){
     $("#buslist").show();
   });
@@ -127,17 +130,40 @@ $(document).ready(function(){
     
     $("#fssId").val(destinationValue);
     $("#tssId").val(sourceValue);
-    
-    
-    
+ 
   });
 });
-
 </script>
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+    $(document).ready(function() {
+        $("#contactLink").click(function() {
+            // Make an AJAX request to retrieve the contact details
+            $.ajax({
+                url: "getContactDetails",
+                type: "GET",
+                success: function(response) {
+                    // Update the contact details section with the response
+                    $("#contactDetails").html(response);
+                },
+                error: function() {
+                    alert("Failed to retrieve contact details.");
+                }
+            });
+        });
+    });
+    </script>
 
 </head>
 <body >
 
+<div>
+
+<jsp:include page="navbar.jsp">
+  <jsp:param name="currentPage" value="home" />
+</jsp:include>
 
 
 <div class="container" id="me">
@@ -200,6 +226,8 @@ $(document).ready(function(){
       </div>
     </div>
   </form>
+</div>
+
 </div>
 
 

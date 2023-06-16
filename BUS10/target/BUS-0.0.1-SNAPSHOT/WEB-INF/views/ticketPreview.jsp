@@ -43,6 +43,8 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
   <script>
+  var ticketNum;
+  var payment_id;
     $(document).ready(function() {
       $('form').submit(function(e) {
         e.preventDefault(); // Prevent form submission
@@ -66,6 +68,8 @@
                 "image": "https://example.com/your_logo",
                 "order_id": response.id,
                 "handler": function(response) {
+                	
+                 payment_id=response.razorpay_payment_id.toString();
                   console.log(response.razorpay_payment_id);
                   console.log(response.razorpay_order_id);
                   console.log(response.razorpay_signature);
@@ -75,7 +79,7 @@
                   // Clear the input fields
                   $('#amount').val('');
                   $('#ticketNumber').val('');
-                  window.location.href = "confirm";
+                  window.location.href = "confirm?paymentId="+payment_id;
                 },
                 "prefill": {
                   "name": "",
@@ -160,7 +164,7 @@
 
       <input type="submit" value="Make Payment">
     </form>
-    <form action="paymentProcessing.jsp" method="post" target="_blank">
+
     
    
 </body>

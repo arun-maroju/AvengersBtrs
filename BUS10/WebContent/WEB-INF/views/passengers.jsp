@@ -7,85 +7,110 @@
 <head>
     <title>Passenger Management</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-        }
+  <style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
 
-        .container {
-            max-width: 800px;
-            padding: 20px;
-            background-color: #f2f2f2;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+  .container {
+    max-width: 800px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-        .passenger-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 10px;
-            margin-bottom: 10px;
-        }
+  .passenger-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-bottom: 10px;
+  }
 
-        .passenger-container input,
-        .passenger-container select {
-            width: 100%;
-            padding: 8px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        
-        .dropbtn {
-            background-color: #04AA6D;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-        }
+  .passenger-container input,
+  .passenger-container select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
 
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+  .dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 8px;
+    font-size: 12px;
+    border: none;
+  }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
 
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
 
-        .dropdown-content a:hover {
-            background-color: #ddd;
-        }
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
 
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
 
-        .dropdown:hover .dropbtn {
-            background-color: #3e8e41;
-        }
-    </style>
+  .dropdown:hover .dropdown-content {
+    display: inline;
+  }
+
+  .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+  }
+
+  .grid-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 200px;
+  }
+
+  .table-container {
+    flex-shrink: 0;
+    margin-left: auto; 
+    margin-top: 0px;
+  }
+
+  .container {
+    flex-grow: 1;
+    padding: 20px;
+  }
+
+  .table-container table {
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+  }
+</style>
+
+
     
     <!-- Add Bootstrap CDN link here -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -93,6 +118,10 @@
           crossorigin="anonymous">
 </head>
 <body>
+<jsp:include page="navbar.jsp">
+  <jsp:param name="currentPage" value="home" />
+</jsp:include>
+
 <%
     int counter = (Integer) request.getAttribute("count");
     System.out.println(counter);
@@ -104,7 +133,47 @@
     int i = 1;
 %>
 
-<table class="table table-striped">
+<div class="grid-container">
+<div class="container">
+    <h1>Passengers Details</h1>
+    <form action="passengerPreview" method="POST">
+        <div id="passenger-list">
+            <%
+                for (Map.Entry<String, String> entry : selectedSeatsData.entrySet()) {
+                    String seatNumber = entry.getKey();
+                    String genderStatus1 = entry.getValue();
+                    String genderStatus = selectedSeatsData.getOrDefault(seatNumber, "Any");
+            %>
+            <div class="passenger-container">
+                <label>Passenger Id</label>
+                <label>Seat Number</label>
+                <input type="text" name="passenger_id[]" value="P<%= String.format("%03d", i) %>" required readonly>
+                <input type="text" name="seat_number[]" value="<%= seatNumber %>" required readonly>
+                <input type="text" name="passenger_name[]" placeholder="Passenger Name" required>
+                <input type="text" name="passenger_age[]" placeholder="Passenger Age" required>
+                <select name="passenger_gender[]" <%= genderStatus.equals("Female") ? "disabled" : "" %> required>
+                    <option value="Male" <%= genderStatus.equals("Male") ? "selected" : "" %>>Male</option>
+                    <option value="Female" <%= genderStatus.equals("Female") ? "selected" : "" %>>Female</option>
+                    <option value="Other" <%= genderStatus.equals("Other") ? "selected" : "" %>>Other</option>
+                </select>
+                <input type="hidden" name="passenger_gender[]" value="<%= genderStatus %>"
+                       <%= genderStatus.equals("Female") ? "" : "disabled" %>>
+            </div>
+            <%
+                i++;
+            }
+            %>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        
+    </form>
+    <button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+</div>
+
+<div class="table-container">
+<h3>Previous passenger details</h3>
+<table class="table table-striped" border='1'>
     <thead class="thead-dark">
     <tr>
         <th>Name</th>
@@ -144,41 +213,8 @@
     %>
     </tbody>
 </table>
+</div>
 
-<div class="container">
-    <h1>Passengers Details</h1>
-    <form action="passengerPreview" method="POST">
-        <div id="passenger-list">
-            <%
-                for (Map.Entry<String, String> entry : selectedSeatsData.entrySet()) {
-                    String seatNumber = entry.getKey();
-                    String genderStatus1 = entry.getValue();
-                    String genderStatus = selectedSeatsData.getOrDefault(seatNumber, "Any");
-            %>
-            <div class="passenger-container">
-                <label>Passenger Id</label>
-                <label>Seat Number</label>
-                <input type="text" name="passenger_id[]" value="P<%= String.format("%03d", i) %>" required readonly>
-                <input type="text" name="seat_number[]" value="<%= seatNumber %>" required readonly>
-                <input type="text" name="passenger_name[]" placeholder="Passenger Name" required>
-                <input type="text" name="passenger_age[]" placeholder="Passenger Age" required>
-                <select name="passenger_gender[]" <%= genderStatus.equals("Female") ? "disabled" : "" %> required>
-                    <option value="Male" <%= genderStatus.equals("Male") ? "selected" : "" %>>Male</option>
-                    <option value="Female" <%= genderStatus.equals("Female") ? "selected" : "" %>>Female</option>
-                    <option value="Other" <%= genderStatus.equals("Other") ? "selected" : "" %>>Other</option>
-                </select>
-                <input type="hidden" name="passenger_gender[]" value="<%= genderStatus %>"
-                       <%= genderStatus.equals("Female") ? "" : "disabled" %>>
-            </div>
-            <%
-                i++;
-            }
-            %>
-        </div>
-        <br>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button onclick="goBack()" class="btn btn-secondary">Go Back</button>
-    </form>
 </div>
 
 <script>

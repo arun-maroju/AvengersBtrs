@@ -73,7 +73,9 @@
 
 <body>
 
-
+<jsp:include page="navbar.jsp">
+  <jsp:param name="currentPage" value="home" />
+</jsp:include>
   <div class="container">
     <h1>Send Email</h1>
     <div class="form-container">

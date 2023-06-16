@@ -223,6 +223,11 @@
     </style>
 </head>
 <body>
+
+<jsp:include page="navbar.jsp">
+  <jsp:param name="currentPage" value="home" />
+</jsp:include>
+
     <% 
    		 List<SeatsBookedForOneService> sl = (List<SeatsBookedForOneService>) request.getAttribute("sl");
     		BusSearchListDto b= (BusSearchListDto) request.getAttribute("selectedBusDetails");
