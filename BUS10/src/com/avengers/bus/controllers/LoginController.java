@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.avengers.bus.services.UserService;
@@ -33,7 +35,7 @@ public class LoginController {
 		}
 	}
 
-	@GetMapping("/login")
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String showLoginPage(HttpSession session) {
 		// Check if the user is already logged in
 		if (session.getAttribute("authenticatedUser") != null) {

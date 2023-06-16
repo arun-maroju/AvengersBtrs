@@ -2,9 +2,16 @@ package com.avengers.bus.controllers;
 
 import org.springframework.stereotype.Controller;
 
+import com.avengers.bus.services.UserService;
+
 // controller
 @Controller
 public class AuthenticationController {
+
+	public Object userDetailsService(UserService userService) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	//
 	// Userlist ul = new Userlist();
 	// List<Email> el = ul.getuser();
