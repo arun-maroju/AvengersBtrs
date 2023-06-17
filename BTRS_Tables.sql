@@ -1581,3 +1581,56 @@ DROP TABLE btrs_user_passengers
     insert into btrs_user_passengers values(9,'Vamsi. M',22,'Female')
     
     
+-- FUNCTION: public.auto_update_seats_count()
+
+-- DROP FUNCTION IF EXISTS public.auto_update_seats_count();
+
+CREATE OR REPLACE FUNCTION public.auto_update_seats_count()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
+BEGIN
+  -- Trigger function logic goes here
+  -- You can access the old and new values using OLD and NEW keywords respectively
+  -- For example:
+  IF NEW.status = 'true' THEN
+    -- Do something
+		update btrs_services set seats_available=seats_available-1;
+  END IF;
+
+  RETURN NEW; -- Return the modified row (required for some types of triggers)
+END;
+$BODY$;
+
+ALTER FUNCTION public.auto_update_seats_count()
+    OWNER TO postgres;
+
+
+
+-- FUNCTION: public.auto_update_collection()
+
+-- DROP FUNCTION IF EXISTS public.auto_update_collection();
+
+CREATE OR REPLACE FUNCTION public.auto_update_collection()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
+BEGIN
+  -- Trigger function logic goes here
+  -- You can access the old and new values using OLD and NEW keywords respectively
+  -- For example:
+  IF NEW.status = 'confirmed' THEN
+    -- Do something
+		update btrs_services set collection=collection+new.total_fare;
+  END IF;
+
+  RETURN NEW; -- Return the modified row (required for some types of triggers)
+END;
+$BODY$;
+
+ALTER FUNCTION public.auto_update_collection()
+    OWNER TO postgres;
