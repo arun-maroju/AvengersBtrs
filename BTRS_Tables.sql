@@ -1581,56 +1581,273 @@ DROP TABLE btrs_user_passengers
     insert into btrs_user_passengers values(9,'Vamsi. M',22,'Female')
     
     
--- FUNCTION: public.auto_update_seats_count()
 
--- DROP FUNCTION IF EXISTS public.auto_update_seats_count();
 
-CREATE OR REPLACE FUNCTION public.auto_update_seats_count()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE NOT LEAKPROOF
-AS $BODY$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//ak  17th june codes
+select * from btrs_amenities
+
+select * from btrs_types_amenities
+
+select * from btrs_bustypes
+
+select * from btrs_buses
+
+select * from btrs_routes
+
+select * from btrs_trips
+
+select * from btrs_services order by collection desc;
+
+select * from btrs_stops
+
+select * from btrs_stp_distances
+
+select * from btrs_bus_seats
+
+select * from btrs_trip_stops
+
+select * from btrs_users
+
+select * from btrs_distance_fares
+
+/*drop table btrs_schedule*/
+select * from btrs_schedule
+
+select * from btrs_seat_book
+
+/*drop table btrs_seats_booked*/
+select * from btrs_seats_booked
+
+select * from btrs_service_stops
+
+select * from btrs_ticket_passengers
+
+select * from btrs_tickets
+
+select * from btrs_user_passengers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////
+/* This is just to update seats count in services table*/
+CREATE OR REPLACE FUNCTION auto_update_seats_count()
+RETURNS TRIGGER AS $$
+
 BEGIN
-  -- Trigger function logic goes here
-  -- You can access the old and new values using OLD and NEW keywords respectively
-  -- For example:
-  IF NEW.status = 'true' THEN
-    -- Do something
-		update btrs_services set seats_available=seats_available-1;
+    IF NEW.status = 'true' THEN
+		update btrs_services set seats_available=seats_available-1 where btrs_services.service_id=new.service_id;
   END IF;
-
-  RETURN NEW; -- Return the modified row (required for some types of triggers)
+    RETURN NEW;
 END;
-$BODY$;
+$$ LANGUAGE plpgsql;
 
-ALTER FUNCTION public.auto_update_seats_count()
-    OWNER TO postgres;
+CREATE TRIGGER update_seats_count
+AFTER INSERT ON btrs_seat_book
+FOR EACH ROW
+EXECUTE FUNCTION auto_update_seats_count();
+////////////////////////////////////////////////////////////////////////
+/* This is just to update collection in services table*/
+CREATE OR REPLACE FUNCTION auto_update_collection()
+RETURNS TRIGGER AS $$
 
-
-
--- FUNCTION: public.auto_update_collection()
-
--- DROP FUNCTION IF EXISTS public.auto_update_collection();
-
-CREATE OR REPLACE FUNCTION public.auto_update_collection()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE NOT LEAKPROOF
-AS $BODY$
 BEGIN
-  -- Trigger function logic goes here
-  -- You can access the old and new values using OLD and NEW keywords respectively
-  -- For example:
-  IF NEW.status = 'confirmed' THEN
-    -- Do something
-		update btrs_services set collection=collection+new.total_fare;
+    IF NEW.status = 'confirmed' THEN
+		update btrs_services set collection=collection+new.total_fare where btrs_services.service_id=new.service_id;
   END IF;
-
-  RETURN NEW; -- Return the modified row (required for some types of triggers)
+    RETURN NEW;
 END;
-$BODY$;
+$$ LANGUAGE plpgsql;
 
-ALTER FUNCTION public.auto_update_collection()
-    OWNER TO postgres;
+CREATE TRIGGER update_collection
+AFTER INSERT ON btrs_tickets
+FOR EACH ROW
+EXECUTE FUNCTION auto_update_collection();
+////////////////////////////////////////////////////////////////
+
+select * from btrs_seat_book
+select * from btrs_services order by collection desc;
+select * from btrs_tickets
+select * from btrs_ticket_passengers
+
+insert into btrs_tickets values(102514652023617123456789,'dummy_payment',8,date '2023-06-17',now()::time,942,1025,1465,'card',1320,'confirmed',4)
+
+insert into btrs_ticket_passengers values(102514652023617123456789,1,'Arun',22,'Male',3,330);
+insert into btrs_ticket_passengers values(102514652023617123456789,2,'Venkat',20,'Male',5,330);
+insert into btrs_ticket_passengers values(102514652023617123456789,3,'Imran',21,'Male',5,330);
+insert into btrs_ticket_passengers values(102514652023617123456789,4,'Rabin',24,'Male',6,330);
+
+/*delete from btrs_ticket_passengers where booking_id='102514652023617123456789';*/
+insert into btrs_seat_book values(1465,3,true,'Male');
+insert into btrs_seat_book values(1465,4,true,'Male');
+insert into btrs_seat_book values(1465,5,true,'Male');
+insert into btrs_seat_book values(1465,6,true,'Male');
+
+
+
+//////////////////////////////////////////////////////////////////
+CREATE OR REPLACE FUNCTION auto_update_female_logic()
+RETURNS TRIGGER AS $$
+DECLARE
+    v_service_id INT;
+    curr_seat_no int;
+    curr_seat_status boolean;
+    curr_seat_gender varchar;
+    beside_seat_no int;
+    beside_seat_status boolean;
+    beside_seat_gender varchar;
+BEGIN
+
+    SELECT service_id INTO v_service_id
+    FROM btrs_tickets
+    WHERE booking_id = NEW.booking_id;
+    
+    
+    curr_seat_no:=new.seat_no;
+    
+    SELECT status, gender
+    INTO curr_seat_status, curr_seat_gender
+    FROM btrs_seat_book
+    WHERE seat_id = curr_seat_no AND service_id = v_service_id;
+
+    RAISE NOTICE 'curr_seat_no: % curr_seat_status: %, curr_seat_gender: %',curr_seat_no,curr_seat_status, curr_seat_gender;
+IF NEW.gender = 'Female' THEN
+    			IF NEW.seat_no<=24 THEN
+                		IF curr_seat_status=false and curr_seat_gender='Female' THEN
+                        		update btrs_seat_book set status=true where service_id=v_service_id and seat_id=new.seat_no;
+                		ELSIF NEW.seat_no%2 =0 THEN
+                        		beside_seat_no=new.seat_no-1;
+                                select status,gender into beside_seat_status,beside_seat_gender from btrs_seat_book
+                                where seat_id=beside_seat_no and service_id=v_service_id;
+                                insert into btrs_seat_book values(v_service_id,new.seat_no,true,'Female');
+                                 RAISE NOTICE 'beside seat status %s number%s gender %s',beside_seat_status,beside_seat_no,beside_seat_gender;
+                             	IF (beside_seat_status is null) THEN                       		
+                                     insert into btrs_seat_book values(v_service_id,beside_seat_no,false,'Female');
+                                END IF;
+                        ELSIF NEW.seat_no%2 !=0 THEN
+                        		beside_seat_no=new.seat_no+1;
+                                select status,gender into beside_seat_status,beside_seat_gender from btrs_seat_book
+                                where seat_id=beside_seat_no and service_id=v_service_id;
+                                insert into btrs_seat_book values(v_service_id,new.seat_no,true,'Female');
+                                 RAISE NOTICE 'beside seat status %s number%s gender %s',beside_seat_status,beside_seat_no,beside_seat_gender;
+                             	IF (beside_seat_status is null) THEN                       		
+                                     insert into btrs_seat_book values(v_service_id,beside_seat_no,false,'Female');
+                                END IF;
+                        END IF;
+                 ELSIF 	(NEW.seat_no>24 and NEW.seat_no<=32) THEN
+                        insert into btrs_seat_book values(v_service_id,new.seat_no,true,'Female');
+				 END IF;
+     ELSE
+                 insert into btrs_seat_book values(v_service_id,new.seat_no,true,NEW.gender);
+     END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE TRIGGER female_logic_trigger
+AFTER INSERT ON btrs_ticket_passengers
+FOR EACH ROW
+EXECUTE FUNCTION auto_update_female_logic();
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+insert into btrs_ticket_passengers values(102514652023617123456789,5,'Dharani',22,'Female',7,330);
+insert into btrs_ticket_passengers values(102514652023617123456789,6,'Dhana',11,'Female',15,330);
+insert into btrs_ticket_passengers values(102514652023617123456789,7,'Indu',24,'Female',20,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,8,'Rink',24,'Other',28,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,9,'Indira',24,'Female',29,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,10,'Indra',24,'Male',1,495);
+
+insert into btrs_ticket_passengers values(102514652023617123456789,11,'Chiru',24,'Female',2,495);
+
+insert into btrs_ticket_passengers values(102514652023617123456789,11,'Chiru',24,'Female',2,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,12,'Laxmi',24,'Female',22,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,14,'Prasanna',24,'Female',23,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,15,'Prasanna',24,'Female',13,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,16,'Prasanna',24,'Female',14,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,17,'Prasanna',24,'Female',19,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,17,'Prasanna',24,'Female',19,495);
+
+
+insert into btrs_ticket_passengers values(102514652023617123456789,18,'Prasanna',24,'Female',16,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,19,'Prasanna',24,'Female',10,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,20,'Prasanna',24,'Female',11,495);
+
+insert into btrs_ticket_passengers values(102514652023617123456789,21,'Prasanna',24,'Female',9,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,22,'Prasanna',24,'Female',18,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,23,'Prasanna',24,'Female',17,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,24,'Prasanna',24,'Male',31,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,26,'Prasanna',24,'Male',8,495);
+insert into btrs_ticket_passengers values(102514652023617123456789,27,'Prasanna',24,'Male',24,495);
+
+
+
+
+
+select * from btrs_seat_book where service_id='1465';
+
+select * from btrs_services where service_id='1465'
+
+select * from btrs_ticket_passengers where booking_id='102514652023617123456789';
+
+select * from btrs_tickets where booking_id='102514652023617123456789';
