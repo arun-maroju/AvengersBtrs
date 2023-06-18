@@ -23,9 +23,9 @@
 <style>
 /* Styles */
 
-body {
+#homeBody {
   background-color: white;
-  padding: 20px;
+  
   
 }
 
@@ -84,7 +84,7 @@ button:hover {
 
 
 
-body{
+#homeBody{
   background-image: url('https://static.abhibus.com/assets/img/bus-seach-bg.png');
   background-repeat: no-repeat;
   background-size: 100% 150%;
@@ -157,13 +157,15 @@ $(document).ready(function(){
     </script>
 
 </head>
-<body >
-
-<div>
-
 <jsp:include page="navbar.jsp">
   <jsp:param name="currentPage" value="home" />
 </jsp:include>
+<body id="homeBody">
+
+
+<div>
+
+
 
 
 <div class="container" id="me">

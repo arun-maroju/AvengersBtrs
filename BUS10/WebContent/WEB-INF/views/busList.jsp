@@ -9,9 +9,8 @@
     <title>Bus List Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
     <style>
-        body {
+        #listBody {
             background-color: #fff;
-            font-family: "Brush Script MT", cursive;
         }
 
         .container {
@@ -100,16 +99,18 @@
 
     </style>
 </head>
-<body>
 <jsp:include page="navbar.jsp">
   <jsp:param name="currentPage" value="home" />
 </jsp:include>
+<body id='listBody'>
+
 
     <div class="container">
         <h1 class="text-center mb-4" style="color:black">Available Services</h1>
         <% 
         List<BusSearchListDto> buses = (List<BusSearchListDto>) request.getAttribute("buses");
         for (BusSearchListDto b : buses) {
+        	System.out.println("Hello"+b);
             %>
             
             <form method="Get" action="layout">

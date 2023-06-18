@@ -8,7 +8,7 @@
     <title>Passenger Management</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
-  body {
+  body :not(p){
     display: flex;
     justify-content: center;
     align-items: center;
