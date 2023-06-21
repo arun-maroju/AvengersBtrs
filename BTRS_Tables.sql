@@ -1851,3 +1851,66 @@ select * from btrs_services where service_id='1465'
 select * from btrs_ticket_passengers where booking_id='102514652023617123456789';
 
 select * from btrs_tickets where booking_id='102514652023617123456789';
+
+
+
+
+
+// auto update the user passengers trigger by imran,arun
+
+CREATE OR REPLACE FUNCTION auto_insert_user_passengers()
+RETURNS TRIGGER AS $$
+DECLARE 
+	flag1 BOOLEAN;
+	userId INT;
+	passengerCount INT;
+BEGIN
+	flag1 := TRUE;
+
+	SELECT user_id INTO userId FROM btrs_tickets WHERE booking_id = NEW.booking_id;
+
+	RAISE NOTICE 'The new inserting passenger is for %', userId;
+
+	SELECT COUNT(*) INTO passengerCount FROM btrs_user_passengers
+	WHERE user_id = userId
+	AND passenger_name = NEW.passenger_name
+	AND gender = NEW.gender
+	AND age = NEW.age;
+
+	IF passengerCount > 0 THEN
+		flag1 := FALSE;
+	END IF;
+
+	IF flag1 THEN
+		INSERT INTO btrs_user_passengers VALUES (userId, NEW.passenger_name, NEW.age, NEW.gender);
+	END IF;
+
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER auto_insert_user_passengers_trigger
+AFTER INSERT ON btrs_ticket_passengers
+FOR EACH ROW
+EXECUTE FUNCTION auto_insert_user_passengers();
+
+
+
+
+
+
+
+
+
+select * from btrs_ticket_passengers where booking_id='844102820236191687158033650';
+
+select * from btrs_tickets where booking_id='844102820236191687158033650';
+
+
+select * from btrs_user_passengers where user_id=9;
+
+insert into btrs_ticket_passengers values('844102820236191687158033650',5,'BTRS',12,'Other',32,100);
+
+
+
+
