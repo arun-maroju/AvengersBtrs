@@ -1953,3 +1953,77 @@ CREATE TRIGGER delete_passengers_cancel
 AFTER UPDATE ON btrs_tickets
 FOR EACH ROW
 EXECUTE FUNCTION auto_delete_passengers_cancel();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////Auto update seats upon cancellation
+
+
+
+CREATE OR REPLACE FUNCTION auto_update_seats_cancel()
+RETURNS TRIGGER AS $$
+DECLARE
+	seat1 int;
+    seat2 int;
+    serviceId int;
+BEGIN
+	
+    select service_id into serviceId from btrs_tickets where booking_id=old.booking_id;
+	seat1:=OLD.seat_no;
+	raise notice 'current seat no: %',seat1;
+    raise notice 'serviceId  no: %',serviceId;
+
+
+    IF seat1<=24 THEN
+    	IF seat1%2=0 THEN
+        	seat2:=seat1-1;
+        ELSE 
+        	seat2:=seat1+1;
+        END IF;
+            raise notice 'beside seat  no: %',seat2;
+        --(seat2 is empty and not female)(means seat2 does not exist in table)
+        IF (select count(*) from btrs_seat_book where seat_id=seat2 and service_id=serviceId)=0 THEN
+        	delete from btrs_seat_book where seat_id=seat1 and service_id=serviceId;
+        END IF;
+        --(seat2 is full and male)(means seat2 in table and status booked and gender male)
+        IF (select count(*) from btrs_seat_book where seat_id=seat2 and service_id=serviceId and gender='Male' and status=true)>0 THEN
+        	delete from btrs_seat_book where seat_id=seat1 and service_id=serviceId;
+        END IF;
+        --(seat2 is empty and female)(means seat2 in table and status not booked)
+        IF (select count(*) from btrs_seat_book where seat_id=seat2 and service_id=serviceId and gender='Female' and status=false)>0 THEN
+        	delete from btrs_seat_book where seat_id=seat1 and service_id=serviceId;
+            delete from btrs_seat_book where seat_id=seat2 and service_id=serviceId;
+        END IF;
+        --(seat2 is full and female)(means seat2 in table and status booked and gender female)
+        IF (select count(*) from btrs_seat_book where seat_id=seat2 and service_id=serviceId and gender='Female' and status=true)>0 THEN
+        	update btrs_seat_book set status=false, gender='Female' where seat_id=seat1 and service_id=serviceId;
+        END IF;
+    ELSE
+    	delete from btrs_seat_book where seat_id=seat1 and service_id=serviceId;
+ 	END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE TRIGGER update_seats_cancel
+AFTER DELETE ON btrs_ticket_passengers
+FOR EACH ROW
+EXECUTE FUNCTION auto_update_seats_cancel();
+
+
