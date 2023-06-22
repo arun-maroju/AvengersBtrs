@@ -1936,3 +1936,20 @@ FOR EACH ROW
 EXECUTE FUNCTION auto_update_collection_cancel();
 
 
+/////////Auto delete passengers upon cancellation
+CREATE OR REPLACE FUNCTION auto_delete_passengers_cancel()
+RETURNS TRIGGER AS $$
+BEGIN
+	
+    IF NEW.status = 'cancelled' THEN
+    	INSERT INTO btrs_cancelled_ticket_passengers SELECT * FROM btrs_ticket_passengers where booking_id=OLD.booking_id;
+		delete from btrs_ticket_passengers where booking_id=OLD.booking_id;
+  END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_passengers_cancel
+AFTER UPDATE ON btrs_tickets
+FOR EACH ROW
+EXECUTE FUNCTION auto_delete_passengers_cancel();
