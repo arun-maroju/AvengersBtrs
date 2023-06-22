@@ -1652,8 +1652,6 @@ select * from btrs_seat_book
 /*drop table btrs_seats_booked*/
 select * from btrs_seats_booked
 
-select * from btrs_service_stops
-
 select * from btrs_ticket_passengers
 
 select * from btrs_tickets
