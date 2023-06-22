@@ -1912,3 +1912,27 @@ insert into btrs_ticket_passengers values('844102820236191687158033650',5,'BTRS'
 
 
 
+
+
+/////////Auto update collection and seat_count in service upon ticket cancellation
+
+
+
+CREATE OR REPLACE FUNCTION auto_update_collection_cancel()
+RETURNS TRIGGER AS $$
+
+BEGIN
+    IF NEW.status = 'cancelled' THEN
+		update btrs_services set collection=collection-old.total_fare where btrs_services.service_id=old.service_id;
+        update btrs_services set seats_available=seats_available+old.no_of_seats_booked where btrs_services.service_id=old.service_id;
+  END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_collection_cancel
+AFTER UPDATE ON btrs_tickets
+FOR EACH ROW
+EXECUTE FUNCTION auto_update_collection_cancel();
+
+
