@@ -988,190 +988,7 @@ CREATE TABLE btrs_schedule (
 
 select * from btrs_services
 
-INSERT INTO btrs_schedule (schedule_id, service_id, trip_date, seats_booked)
-VALUES
-(1, 1001, '2023-06-05', 32),
-(2, 1002, '2023-06-05', 32),
-(3, 1003, '2023-06-05', 32),
-(4, 1004, '2023-06-05', 32),
-(5, 1005, '2023-06-05', 32),
-(6, 1006, '2023-06-05', 32),
-(7, 1007, '2023-06-05', 32),
-(8, 1008, '2023-06-05', 32),
-(9, 1009, '2023-06-05', 32),
-(10, 1010, '2023-06-05', 32),
-(11, 1011, '2023-06-05', 32),
-(12, 1012, '2023-06-05', 32),
-(13, 1013, '2023-06-05', 32),
-(14, 1014, '2023-06-05', 32),
-(15, 1015, '2023-06-05', 32),
-(16, 1016, '2023-06-05', 32),
-(17, 1017, '2023-06-05', 32),
-(18, 1018, '2023-06-05', 32),
-(19, 1019, '2023-06-05', 32),
-(20, 1020, '2023-06-05', 32),
-(21, 1021, '2023-06-05', 32),
-(22, 1022, '2023-06-05', 32),
-(23, 1023, '2023-06-05', 32),
-(24, 1024, '2023-06-05', 32),
-(25, 1025, '2023-06-05', 32),
-(26, 1026, '2023-06-05', 32),
-(27, 1027, '2023-06-05', 32),
-(28, 1028, '2023-06-05', 32),
-(29, 1029, '2023-06-05', 32),
-(30, 1030, '2023-06-05', 32),
-(31, 1031, '2023-06-05', 32),
-(32, 1032, '2023-06-05', 32),
-(33, 1033, '2023-06-05', 32),
-(34, 1034, '2023-06-05', 32),
-(35, 1035, '2023-06-05', 32),
-(36, 1036, '2023-06-05', 32),
-(37, 1037, '2023-06-05', 32),
-(38, 1038, '2023-06-05', 32),
-(39, 1039, '2023-06-05', 32),
-(40, 1040, '2023-06-05', 32),
-(41, 1041, '2023-06-05', 32),
-(42, 1042, '2023-06-05', 32),
-(43, 1043, '2023-06-05', 32),
-(44, 1044, '2023-06-05', 32),
-(45, 1045, '2023-06-05', 32),
-(46, 1046, '2023-06-05', 32),
-(47, 1047, '2023-06-05', 32),
-(48, 1048, '2023-06-05', 32);
 
-
-CREATE OR REPLACE PROCEDURE insert_btrs_schedule(date_param DATE)
-AS $$
-BEGIN
-  INSERT INTO btrs_schedule (service_id, trip_date, seats_booked)
-  VALUES
-  (1001, date_param, 32),
-  (1002, date_param, 32),
-  (1003, date_param, 32),
-  (1004, date_param, 32),
-  (1005, date_param, 32),
-  (1006, date_param, 32),
-  (1007, date_param, 32),
-  (1008, date_param, 32),
-  (1009, date_param, 32),
-  (1010, date_param, 32),
-  (1011, date_param, 32),
-  (1012, date_param, 32),
-  (1013, date_param, 32),
-  (1014, date_param, 32),
-  (1015, date_param, 32),
-  (1016, date_param, 32),
-  (1017, date_param, 32),
-  (1018, date_param, 32),
-  (1019, date_param, 32),
-  (1020, date_param, 32),
-  (1021, date_param, 32),
-  (1022, date_param, 32),
-  (1023, date_param, 32),
-  (1024, date_param, 32),
-  (1025, date_param, 32),
-  (1026, date_param, 32),
-  (1027, date_param, 32),
-  (1028, date_param, 32),
-  (1029, date_param, 32),
-  (1030, date_param, 32),
-  (1031, date_param, 32),
-  (1032, date_param, 32),
-  (1033, date_param, 32),
-  (1034, date_param, 32),
-  (1035, date_param, 32),
-  (1036, date_param, 32),
-  (1037, date_param, 32),
-  (1038, date_param, 32),
-  (1039, date_param, 32),
-  (1040, date_param, 32),
-  (1041, date_param, 32),
-  (1042, date_param, 32),
-  (1043, date_param, 32),
-  (1044, date_param, 32),
-  (1045, date_param, 32),
-  (1046, date_param, 32),
-  (1047, date_param, 32),
-  (1048, date_param, 32);
-END;
-$$ LANGUAGE plpgsql;
-
-select * from btrs_schedule
-
-truncate table btrs_schedule
-
-CREATE OR REPLACE PROCEDURE insert_btrs_schedule_loop_30(start_date DATE)
-AS $$
-DECLARE
-  i INT := 1;
-  curr_date DATE := start_date;
-  s_id INT;
-BEGIN
-  SELECT MAX(schedule_id) INTO s_id FROM btrs_schedule;
-  
-  WHILE i <= 30 LOOP
-    INSERT INTO btrs_schedule (schedule_id, service_id, trip_date, seats_booked)
-    VALUES
-      (s_id + 1, 1001, curr_date, 32),
-      (s_id + 2, 1002, curr_date, 32),
-      (s_id + 3, 1003, curr_date, 32),
-      (s_id + 4, 1004, curr_date, 32),
-      (s_id + 5, 1005, curr_date, 32),
-      (s_id + 6, 1006, curr_date, 32),
-      (s_id + 7, 1007, curr_date, 32),
-      (s_id + 8, 1008, curr_date, 32),
-      (s_id + 9, 1009, curr_date, 32),
-      (s_id + 10, 1010, curr_date, 32),
-      (s_id + 11, 1011, curr_date, 32),
-      (s_id + 12, 1012, curr_date, 32),
-      (s_id + 13, 1013, curr_date, 32),
-      (s_id + 14, 1014, curr_date, 32),
-      (s_id + 15, 1015, curr_date, 32),
-      (s_id + 16, 1016, curr_date, 32),
-      (s_id + 17, 1017, curr_date, 32),
-      (s_id + 18, 1018, curr_date, 32),
-      (s_id + 19, 1019, curr_date, 32),
-      (s_id + 20, 1020, curr_date, 32),
-      (s_id + 21, 1021, curr_date, 32),
-      (s_id + 22, 1022, curr_date, 32),
-      (s_id + 23, 1023, curr_date, 32),
-      (s_id + 24, 1024, curr_date, 32),
-      (s_id + 25, 1025, curr_date, 32),
-      (s_id + 26, 1026, curr_date, 32),
-      (s_id + 27, 1027, curr_date, 32),
-      (s_id + 28, 1028, curr_date, 32),
-      (s_id + 29, 1029, curr_date, 32),
-      (s_id + 30, 1030, curr_date, 32),
-      (s_id + 31, 1031, curr_date, 32),
-      (s_id + 32, 1032, curr_date, 32),
-      (s_id + 33, 1033, curr_date, 32),
-      (s_id + 34, 1034, curr_date, 32),
-      (s_id + 35, 1035, curr_date, 32),
-      (s_id + 36, 1036, curr_date, 32),
-      (s_id + 37, 1037, curr_date, 32),
-      (s_id + 38, 1038, curr_date, 32),
-      (s_id + 39, 1039, curr_date, 32),
-      (s_id + 40, 1040, curr_date, 32),
-      (s_id + 41, 1041, curr_date, 32),
-      (s_id + 42, 1042, curr_date, 32),
-      (s_id + 43, 1043, curr_date, 32),
-      (s_id + 44, 1044, curr_date, 32),
-      (s_id + 45, 1045, curr_date, 32),
-      (s_id + 46, 1046, curr_date, 32),
-      (s_id + 47, 1047, curr_date, 32),
-      (s_id + 48, 1048, curr_date, 32);
-
-    curr_date := curr_date + INTERVAL '1' DAY;
-    i := i + 1;
-    s_id := s_id + 48;
-  END LOOP;
-END;
-$$ LANGUAGE plpgsql;
-
-
-select * from btrs_schedule
-
-CALL insert_btrs_schedule_loop_30('2023-06-06');
 
 
 
@@ -1999,7 +1816,7 @@ BEGIN
         	delete from btrs_seat_book where seat_id=seat1 and service_id=serviceId;
         END IF;
         --(seat2 is full and male)(means seat2 in table and status booked and gender male)
-        IF (select count(*) from btrs_seat_book where seat_id=seat2 and service_id=serviceId and gender='Male' and status=true)>0 THEN
+        IF (select count(*) from btrs_seat_book where seat_id=seat2 and service_id=serviceId and gender in ('Male','Other') and status=true)>0 THEN
         	delete from btrs_seat_book where seat_id=seat1 and service_id=serviceId;
         END IF;
         --(seat2 is empty and female)(means seat2 in table and status not booked)
@@ -2026,4 +1843,36 @@ AFTER DELETE ON btrs_ticket_passengers
 FOR EACH ROW
 EXECUTE FUNCTION auto_update_seats_cancel();
 
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE auto_generate_services() AS $$
+DECLARE
+    trip_ids CURSOR FOR SELECT trip_id FROM btrs_trips;
+    start_date DATE := (SELECT MAX(trip_date) FROM btrs_services);
+    end_date DATE := current_date + interval '30 days';
+    tempDate DATE := start_date + interval '1 day';
+    difference INT := end_date - start_date;
+	last_service_id int := (select max(service_id) from btrs_services);
+	new_service_id int:=last_service_id+1;
+    trip_id INTEGER;
+BEGIN
+    FOR i IN 1..difference LOOP
+        OPEN trip_ids;
+        LOOP
+            FETCH trip_ids INTO trip_id;
+            EXIT WHEN NOT FOUND;
+            INSERT INTO btrs_services (service_id,trip_id, trip_date, seats_available, collection)
+            VALUES (new_service_id,trip_id, tempDate, 32, 0);
+			new_service_id:=new_service_id+1;
+        END LOOP;
+        CLOSE trip_ids;
+        tempDate := tempDate + interval '1 day';
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+call auto_generate_services()
 
